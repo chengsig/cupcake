@@ -31,3 +31,18 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(response_data[0]['size'], 'small')
         self.assertEqual(response_data[0]['rating'], 10)
         self.assertEqual(response.status_code, 200)
+
+    def test_add_cupcake(self):
+        """ POST /cupcakes should add a new cupcake """
+        
+        response = self.client.post("/cupcakes",
+                                    json={"flavor": "caramel",
+                                          "size": "medium",
+                                          "rating": 8,
+                                          "id": 10001,
+                                          "image": None})
+
+        self.assertEqual(response.json['response']['flavor'], 'caramel')
+        self.assertEqual(response.json['response']['size'], 'medium')
+        self.assertEqual(response.json['response']['rating'], 8)
+        self.assertEqual(response.status_code, 200)
