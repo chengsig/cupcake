@@ -3,14 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 DEFAULT_url = "https://tinyurl.com/truffle-cupcake"
 
+
 def connect_db(app):
     """Connect to database."""
 
     db.app = app
     db.init_app(app)
 
+
 class Cupcake(db.Model):
     """Create cupcake models"""
+    
     __tablename__ = "cupcakes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
