@@ -31,7 +31,7 @@ def show_cupcakes():
     return jsonify(response=serialized_cupcakes)
 
 
-@app.route('/cupcakes', method=["POST"])
+@app.route('/cupcakes', methods=["POST"])
 def create_cupcake():
     """ Create a new cupcake with a dictionary containing
         {id, flavor, size, rating, image} """
@@ -39,7 +39,7 @@ def create_cupcake():
     flavor = request.json['flavor']
     size = request.json['size']
     rating = request.json['rating']
-    image = request.json['image'] | None
+    image = request.json['image'] or None
 
     new_cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
 
@@ -52,4 +52,26 @@ def create_cupcake():
                           'rating': new_cupcake.rating,
                           'image': new_cupcake.image}
 
+    return jsonify(response=serialized_cupcake)
+
+@app.route('/cupcakes/<int:cupcake_id>', methods=['PATCH'])
+def update_cupcake(cupcake_id):
+    """ Update information about a specific cupcake
+    one or all of the data attributes"""
+
+    cupcake = Cupcake.query.get(cupcake_id)
+
+    cupcake.flavor = request.json['flavor']
+    cupcake.size = request.json['size']
+    cupcake.rating = request.json['rating']
+    cupcake.image = request.json['image'] or None
+
+    db.session.commit()
+
+    serialized_cupcake = {'id': cupcake.id,
+                          'flavor': cupcake.flavor,
+                          'size': cupcake.size,
+                          'rating': cupcake.rating,
+                          'image': cupcake.image}
+                        
     return jsonify(response=serialized_cupcake)
