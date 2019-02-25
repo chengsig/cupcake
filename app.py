@@ -23,8 +23,8 @@ def show_cupcakes():
     found_cupcakes = Cupcake.query.all()
 
     serialized_cupcakes = [
-        {'flavor': found_cupcakes.flavor, 'size': found_cupcakes.size,
-         'rating': found_cupcakes.rating, 'image': found_cupcakes.image}
+        {'flavor': cupcake.flavor, 'size': cupcake.size,
+         'rating': cupcake.rating, 'image': cupcake.image}
         for cupcake in found_cupcakes
     ]
 
