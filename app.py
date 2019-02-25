@@ -75,3 +75,17 @@ def update_cupcake(cupcake_id):
                           'image': cupcake.image}
                         
     return jsonify(response=serialized_cupcake)
+
+
+@app.route('/cupcakes/<int:cupcake_id>', methods=["DELETE"])
+def delete_cupcake(cupcake_id):
+    """ Deletes specified cupcake """
+
+    cupcake = Cupcake.query.get(cupcake_id)
+
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    message = {"message": "Deleted"}
+
+    return jsonify(response=message)
