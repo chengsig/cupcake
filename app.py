@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import Cupcake, db, connect_db
@@ -34,3 +34,21 @@ def show_cupcakes():
 @app.route('/cupcakes', method=["POST"])
 def create_cupcake():
     """ """
+
+    flavor = request.json['flavor']
+    size = request.json['size']
+    rating = request.json['rating']
+    image = request.json['image']
+
+    new_cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
+
+    db.session.add(new_cupcake)
+    db.session.commit()
+
+    serialize_cupcake = {'id': new_cupcake.id,
+                         'flavor': new_cupcake.flavor,
+                         'size': new_cupcake.size,
+                         'rating': new_cupcake.rating,
+                         'image': new_cupcake.image}
+
+    return jsonify(response=serialize_cupcake)
