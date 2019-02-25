@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-DEFAULT_url = "https://tinyurl.com/truffle-cupcake"
+DEFAULT_URL = "https://tinyurl.com/truffle-cupcake"
 
 
 def connect_db(app):
@@ -12,12 +12,12 @@ def connect_db(app):
 
 
 class Cupcake(db.Model):
-    """Create cupcake models"""
-    
+    """ Cupcake model """
+
     __tablename__ = "cupcakes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     flavor = db.Column(db.Text, nullable=False)
     size = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Float, nullable=False)
-    image = db.Column(db.String(200), default=DEFAULT_url)
+    image = db.Column(db.String(200), default=DEFAULT_URL)

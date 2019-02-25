@@ -18,13 +18,13 @@ debug = DebugToolbarExtension(app)
 
 @app.route('/cupcakes')
 def show_cupcakes():
-    """ """
+    """ Show a list of dictionaries containing individual cupcakes """
 
     found_cupcakes = Cupcake.query.all()
 
     serialized_cupcakes = [
-        {'flavor': found_cupcakes.flavor, 'size': found_cupcakes.size, 'rating': found_cupcakes.rating,
-         'image': found_cupcakes.image}
+        {'flavor': found_cupcakes.flavor, 'size': found_cupcakes.size,
+         'rating': found_cupcakes.rating, 'image': found_cupcakes.image}
         for cupcake in found_cupcakes
     ]
 
@@ -33,22 +33,23 @@ def show_cupcakes():
 
 @app.route('/cupcakes', method=["POST"])
 def create_cupcake():
-    """ """
+    """ Create a new cupcake with a dictionary containing
+        {id, flavor, size, rating, image} """
 
     flavor = request.json['flavor']
     size = request.json['size']
     rating = request.json['rating']
-    image = request.json['image']
+    image = request.json['image'] | None
 
     new_cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
 
     db.session.add(new_cupcake)
     db.session.commit()
 
-    serialize_cupcake = {'id': new_cupcake.id,
-                         'flavor': new_cupcake.flavor,
-                         'size': new_cupcake.size,
-                         'rating': new_cupcake.rating,
-                         'image': new_cupcake.image}
+    serialized_cupcake = {'id': new_cupcake.id,
+                          'flavor': new_cupcake.flavor,
+                          'size': new_cupcake.size,
+                          'rating': new_cupcake.rating,
+                          'image': new_cupcake.image}
 
-    return jsonify(response=serialize_cupcake)
+    return jsonify(response=serialized_cupcake)
