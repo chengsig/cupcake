@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import Cupcake, db, connect_db
@@ -14,6 +14,13 @@ db.create_all()
 app.config['SECRET_KEY'] = "I'LL NEVER TELL!!"
 
 debug = DebugToolbarExtension(app)
+
+
+@app.route('/')
+def render_cupcakes():
+    """ Generates homepage template with list of cupcakes """
+   
+    return render_template('index.html')
 
 
 @app.route('/cupcakes')
