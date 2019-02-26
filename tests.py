@@ -46,3 +46,38 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(response.json['response']['size'], 'medium')
         self.assertEqual(response.json['response']['rating'], 8)
         self.assertEqual(response.status_code, 200)
+
+        all_cupcakes = self.client.get('/cupcakes')
+        all_cupcakes_data = all_cupcakes.json['response']
+        self.assertEqual(len(all_cupcakes_data), 2)
+
+    def test_update_cupcake(self):
+        """ PATCH a /cupcake/id should update the cupcake
+        with updated information"""
+
+        response = self.client.patch("/cupcakes/10000",
+                                     json={"flavor": "chocolate",
+                                           "size": "giant",
+                                           "rating": 11,
+                                           "id": 10000,
+                                           "image": None})
+
+        self.assertEqual(response.json['response']['flavor'], "chocolate")
+        self.assertEqual(response.json['response']['size'], 'giant')
+        self.assertEqual(response.json['response']['rating'], 11)
+        self.assertEqual(response.status_code, 200)
+
+        all_cupcakes = self.client.get('/cupcakes')
+        all_cupcakes_data = all_cupcakes.json['response']
+        self.assertEqual(len(all_cupcakes_data), 1)
+
+    def test_delete_cupcake(self):
+        """ DELETE a certain /cupcake/id """
+
+        response = self.client.delete('/cupcakes/10000')
+
+        self.assertEqual(response.json['response']['message'], "Deleted")
+
+        all_cupcakes = self.client.get('/cupcakes')
+        all_cupcakes_data = all_cupcakes.json['response']
+        self.assertEqual(len(all_cupcakes_data), 0)
